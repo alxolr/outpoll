@@ -3,6 +3,16 @@ name = "outpoll"
 version = "0.1.0"
 edition = "2021"
 
+description = "A command line tool to poll a command and notify you when a specific output is reached." 
+authors = ["Alexandru Olaru <alxolr@gmail.com>"]
+license = "MIT OR Apache-2.0"
+keywords = ["cli", "poll", "notify", "command", "output"]
+repository = "https://github.com/alxolr/outpoll"
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
