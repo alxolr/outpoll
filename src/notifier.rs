@@ -1,4 +1,4 @@
-use std::process::Command;
+use notify_rust::Notification;
 
 pub struct Notifier;
 
@@ -8,10 +8,10 @@ impl Notifier {
     }
 
     pub fn notify(&self, message: &str) {
-        Command::new("notify-send")
-            .arg(message)
-            .output()
-            .expect("Failed to send notification");
-        // println!("Notifying: {}", message);
+        Notification::new()
+            .summary("OutPoll Watcher")
+            .body(message)
+            .show()
+            .unwrap();
     }
 }

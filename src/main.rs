@@ -1,17 +1,27 @@
-/// It is a cli tool which will have a poll on a specific command waiting for a specific
-/// output to give results
+use structopt::StructOpt;
+
 mod notifier;
 
-fn main() {
-    let command_argument = std::env::args().nth(1).expect("Command not provided");
+#[derive(Debug, structopt::StructOpt)]
+struct Cli {
+    #[structopt(short)]
+    command: String,
+    #[structopt(short)]
+    watch: String,
+    #[structopt(short, long, default_value = "5")]
+    poll_interval: u64,
+}
 
-    let command = command_argument.split_whitespace().collect::<Vec<&str>>();
-    let watch_for = std::env::args().nth(2).expect("Watch for not provided");
+fn main() {
+    let args = Cli::from_args();
+    let command = args.command.split_whitespace().collect::<Vec<&str>>();
 
     loop {
         println!(
-            "Checking command: {:?} | grep {watch_for}",
-            command.join(" ")
+            "Checking command: '{:?}' for the output '{}' every {} seconds",
+            command.join(" "),
+            args.watch,
+            args.poll_interval
         );
         let command_output = std::process::Command::new(command[0])
             .args(&command[1..])
@@ -20,13 +30,11 @@ fn main() {
 
         let output_str = std::str::from_utf8(&command_output.stdout).unwrap();
 
-        if output_str.contains(&watch_for) {
-            notifier::Notifier::new().notify(&format!("Found the output: {}", watch_for));
+        if output_str.contains(&args.watch) {
+            notifier::Notifier::new().notify(&format!("Found the output: {}", &args.watch));
             break;
-        } else {
-            println!("Output not found: {}", watch_for);
         }
 
-        std::thread::sleep(std::time::Duration::from_secs(5));
+        std::thread::sleep(std::time::Duration::from_secs(args.poll_interval));
     }
 }
