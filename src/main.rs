@@ -1,3 +1,4 @@
+use human_time::ToHumanTimeString;
 use structopt::StructOpt;
 
 mod notifier;
@@ -15,7 +16,7 @@ struct Cli {
 fn main() {
     let args = Cli::from_args();
     let command = args.command.split_whitespace().collect::<Vec<&str>>();
-
+    let start_time = std::time::Instant::now();
     loop {
         println!(
             "Checking command: '{:?}' for the output '{}' every {} seconds",
@@ -37,4 +38,9 @@ fn main() {
 
         std::thread::sleep(std::time::Duration::from_secs(args.poll_interval));
     }
+
+    println!(
+        "Time taken: {}",
+        (start_time.elapsed()).to_human_time_string()
+    );
 }

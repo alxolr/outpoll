@@ -1,6 +1,6 @@
 [package]
 name = "outpoll"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 description = "A command line tool to poll a command and notify you when a specific output is reached." 
@@ -16,5 +16,6 @@ include = [
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-notify-rust = "4.11.0"
+human-time = "0.1.6"
+notify-rust = "4.11.4"
 structopt = "0.3.26"
